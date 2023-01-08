@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="grid h-[calc(80vh)] place-items-center">
+    <div class="card bg-neutral shadow-xl">
+        <div class="card-body">
+            <h1 class="text-4xl font-bold pb-3">Welcome, <em>{{ username }}</em></h1>
+            <ul>
+                <li>Whoever harvests the most souls by <strong>Jan 23</strong> wins the game.</li>
+                <li>To harvest someone else's soul, all you have to do is get them to go to your personal link below.
+                </li>
+                <li>Trickery, bribery, and shameless begging are encouraged.</li>
+            </ul>
+            <div class="form-control">
+                <div class="input-group">
+                    <input id="in_link" size="60" type="text" readonly="true"
+                        value="http://127.0.0.1:5000/harvest/{{ userid }}" class="input input-bordered" />
+                    <button class="btn btn-secondary"
+                        onclick="navigator.clipboard.writeText(document.getElementById('in_link').value)">Copy</button>
+                </div>
+            </div>
+            <div class="card-actions justify-end"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

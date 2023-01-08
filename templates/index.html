@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Join{% endblock %}
+{% block content %}
+<div class="grid h-[calc(80vh)] place-items-center">
+    <div class="card bg-neutral shadow-xl">
+        <div class="card-body">
+            <h1 class="text-4xl font-bold pb-3">The Final Harvest</h1>
+            <p>enter a name for the leaderboard</p>
+            <div class="form-control">
+                <div class="input-group">
+                    <input id="in_name" type="text" placeholder="e.g., Jack the Ripper" class="input input-bordered" />
+                    <button id="btn_join" class="btn btn-outline btn-secondary" disabled="true"
+                        onclick="registerUser('{{ userid }}'); window.location.href='/home/{{ userid }}';">Join</button>
+                </div>
+            </div>
+            <div class="card-actions justify-end"></div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='src/index.js') }}"></script>
+{% endblock %}
