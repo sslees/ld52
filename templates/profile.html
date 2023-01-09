@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="flex mt-10">
+    <div class="flex flex-col ml-auto">
+        <div class="stats m-4 bg-neutral shadow-xl">
+            <div class="stat">
+                <div class="stat-title">Souls Harvested</div>
+                <div class="stat-value text-center pt-2">{{ score }} 👻</div>
+            </div>
+        </div>
+        <div class="stats m-4 bg-neutral shadow-xl">
+            <div class="stat">
+                <div class="stat-title">Leaderboard Rank</div>
+                <div class="stat-value text-center pt-2">{{ place }}</div>
+            </div>
+        </div>
+        <div class="stats m-4 bg-neutral shadow-xl">
+            <div class="stat">
+                <div class="stat-title">Top-5 Leaderboard</div>
+                <div class="pt-3">
+                    <table class="table table-compact">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Souls</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leader in leaderboard(5) %}
+                            <tr>
+                                <th>{{ leader[0] if leader[0] != -1 else "" }}</th>
+                                <td class="truncate max-w-sm">💀 {{ leader[1] }}</td>
+                                <td class="text-right">{{ leader[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col ml-10 mr-auto">
+        <div class="card m-4 bg-neutral shadow-xl">
+            <div class="flex p-6 place-content-center gap-5">
+                <div>
+                    <span class="countdown font-mono text-4xl">
+                        <span id="cd_days" style="--value:0;"></span>
+                    </span>
+                    days
+                </div>
+                <div>
+                    <span class="countdown font-mono text-4xl">
+                        <span id="cd_hrs" style="--value:0;"></span>
+                    </span>
+                    hrs
+                </div>
+                <div>
+                    <span class="countdown font-mono text-4xl">
+                        <span id="cd_min" style="--value:0;"></span>
+                    </span>
+                    min
+                </div>
+                <div>
+                    <span class="countdown font-mono text-4xl">
+                        <span id="cd_sec" style="--value:0;"></span>
+                    </span>
+                    sec
+                </div>
+            </div>
+        </div>
+        <div class="card m-4 bg-neutral shadow-xl max-w-4xl">
+            <div class="card-body">
+                <h1 class="text-4xl font-bold pb-3 truncate">Welcome, {{ username }}</h1>
+                <h1 class="text-xl font-bold pb-3">Time to harvest some souls!</h1>
+                <div class="prose">
+                    <ul>
+                        <li>Whoever harvests the most souls by <strong>Jan 27</strong> wins the game.</li>
+                        <li>To harvest someone else's soul, all you have to do is get them to go to your link below.
+                        </li>
+                        <li>Trickery, bribery, and shameless begging are encouraged.</li>
+                    </ul>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">your link to share</span>
+                    </label>
+                    <div class="input-group">
+                        <input id="in_link" size="60" type="text" readonly="true"
+                            value="http://127.0.0.1:5000/harvest/{{ userid }}" class="input input-bordered" />
+                        <button class="btn btn-outline btn-secondary"
+                            onclick="navigator.clipboard.writeText(document.getElementById('in_link').value)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="card-actions justify-end"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='src/profile.js') }}"></script>
+{% endblock %}

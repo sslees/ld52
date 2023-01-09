@@ -22,3 +22,9 @@ function registerUser(user) {
         }
     });
 }
+
+let profile = localStorage.getItem("profile");
+
+if (profile !== null) {
+    window.location.href = profile
+}

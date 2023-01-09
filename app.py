@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.get("/")
 def index():
-    return render_template("index.html", userid=uuid4())
+    return render_template("index.html", userid=str(uuid4()).replace("-", ""))
 
 
 @app.post("/register")
@@ -21,15 +21,20 @@ def register():
     return "", 201
 
 
-@app.get("/home/<uuid:userid>")
-def user_home(userid):
-    userid = str(userid)
-    return render_template("home.html", username=data.username(userid), userid=userid)
+@app.get("/profile/<userid>")
+def profile(userid):
+    return render_template(
+        "profile.html",
+        username=data.username(userid),
+        userid=userid,
+        score=data.score(userid),
+        leaderboard=data.leaderboard,
+        place=data.place(userid),
+    )
 
 
-@app.get("/harvest/<uuid:userid>")
-def user_harvest(userid):
-    userid = str(userid)
+@app.get("/harvest/<userid>")
+def harvest(userid):
     return render_template(
         "harvest.html",
         unharvested=data.harvest(request.remote_addr, userid),

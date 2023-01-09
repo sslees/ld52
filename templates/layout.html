@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='src/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/output.css') }}">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <title>{% block title %}{% endblock %} - The Final Harvest</title>
@@ -14,16 +14,13 @@
 <body>
     <div class="flex flex-col h-screen justify-between">
         <content class="mb-auto">{% block content %}{% endblock %}</content>
-        <footer class="h-10 p-6 opacity-25 flex items-center justify-between">
-            <p>&copy; Copyright 2023 by <a class="hover:underline" href="https://github.com/sslees">sslees</a>.</p>
-            <ul class="flex flex-wrap items-center">
-                <li>
-                    <a href="/about" class=" hover:underline mr-6 ">About</a>
-                </li>
-                <li>
-                    <a href="/privacy" class=" hover:underline">Privacy Policy</a>
-                </li>
-            </ul>
+        <footer class="flex h-12 p-4 opacity-25 justify-between">
+            <p>&copy; Copyright 2023 by <a class="hover:underline" href="https://github.com/sslees"
+                    target="_blank">sslees</a>.</p>
+            <div class="flex">
+                <a href="/privacy" target="_blank" class="mr-6 hover:underline">Privacy Policy</a>
+                <a href="https://github.com/sslees/ld52" target="_blank" class="hover:underline">Source Code</a>
+            </div>
         </footer>
     </div>
 </body>
