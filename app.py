@@ -1,11 +1,8 @@
 #! /usr/bin/env python3
 
-from uuid import uuid4
-
 from flask import *
+from htmlmin.minify import html_minify
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-import data
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -13,43 +10,25 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 @app.get("/")
 def index():
-    return render_template("index.html", userid=str(uuid4()).replace("-", ""))
-
-
-@app.post("/register")
-def register():
-    data.register(**request.json)
-    return "", 201
+    return html_minify(render_template("index.html"))
 
 
 @app.get("/profile/<userid>")
 def profile(userid):
-    return render_template(
-        "profile.html",
-        username=data.username(userid),
-        userid=userid,
-        score=data.score(userid),
-        leaderboard=data.leaderboard,
-        place=data.place(userid),
-    )
+    return redirect(url_for("index"), code=301)
 
 
 @app.get("/share/<userid>")
 def harvest(userid):
-    return render_template(
-        "harvest.html",
-        unharvested=data.harvest(request.remote_addr, userid),
-        username=data.username(userid),
-    )
+    return redirect(url_for("index"), code=301)
 
 
 @app.get("/privacy")
 def privacy():
-    return render_template("privacy.html")
+    return html_minify(render_template("privacy.html"))
 
 
 def main():
-    data.init()
     app.run(port=8000)
 
 
