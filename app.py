@@ -1,13 +1,14 @@
 #! /usr/bin/env python3
 
-import sys
 from uuid import uuid4
 
 from flask import *
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import data
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 
 @app.get("/")
@@ -33,18 +34,13 @@ def profile(userid):
     )
 
 
-@app.get("/harvest/<userid>")
+@app.get("/share/<userid>")
 def harvest(userid):
     return render_template(
         "harvest.html",
         unharvested=data.harvest(request.remote_addr, userid),
         username=data.username(userid),
     )
-
-
-@app.get("/about")
-def about():
-    return render_template("about.html")
 
 
 @app.get("/privacy")
@@ -54,7 +50,7 @@ def privacy():
 
 def main():
     data.init()
-    app.run(debug=True)
+    app.run(port=8000)
 
 
 if __name__ == "__main__":

@@ -10,17 +10,18 @@ in_name.addEventListener("keypress", function (event) {
     }
 });
 
-function registerUser(user) {
-    fetch("/register", {
+const registerUser = async (userid) => {
+    await fetch("/register", {
         method: "POST",
         body: JSON.stringify({
-            "id": user,
+            "id": userid,
             "name": in_name.value.trim()
         }),
         headers: {
             "Content-Type": "application/json"
         }
     });
+    window.location.href = "/profile/" + userid;
 }
 
 let profile = localStorage.getItem("profile");

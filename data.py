@@ -12,8 +12,11 @@ def init():
 
 def register(id, name):
     with sqlite3.connect(DB_FILE) as con:
-        con.cursor().execute("insert into users values(?, ?)", [id, name])
-        con.commit()
+        if not (
+            con.cursor().execute("select 1 from users where id=?", [id]).fetchone()
+        ):
+            con.cursor().execute("insert into users values(?, ?)", [id, name])
+            con.commit()
 
 
 def username(userid):
@@ -41,12 +44,18 @@ def harvest(soulid, userid):
 
 def score(userid):
     with sqlite3.connect(DB_FILE) as con:
-        res = (
+        res_score = (
             con.cursor()
             .execute("select count(*) from souls where userid=?", [userid])
             .fetchone()
         )
-        return res[0] if res else 0
+        res_total = (
+            con.cursor().execute("select count(distinct soulid) from souls").fetchone()
+        )
+        return (
+            f"👻 {res_score[0] if res_score else 0}"
+            + f" of {res_total[0] if res_total else 0}"
+        )
 
 
 def leaderboard(places):
